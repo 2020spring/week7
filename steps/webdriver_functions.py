@@ -1,9 +1,11 @@
+import datetime
 import time
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
 
 # *******************  Reusable steps *****************************
 # Initializing a new browser
+from steps.webelement_functions import take_screenshot
 
 driver = webdriver.Chrome()
 # driver.maximize_window()
@@ -137,6 +139,7 @@ def click_element_by_xpath(xpath):
     except NoSuchElementException as err:
         print(f"Check element by following xpath: {xpath}")
         print(err)
+        take_screenshot('ErrorClickElement_')
 
 
 def enter_text_by_xpath(xpath, some_text):
@@ -153,3 +156,4 @@ def enter_text_by_xpath(xpath, some_text):
     except WebDriverException as err:
         print(f"Entering Text failed by following xpath: {xpath}")
         print(err)
+        take_screenshot('ErrorEnterText_')

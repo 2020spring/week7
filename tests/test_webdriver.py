@@ -57,7 +57,7 @@ pswd = data['scenario1']['password']
 # organize the tests
 # CheckBox is the same as Radio button - try it yourself
 # drop down list
-test_drop_down_list()
+# test_drop_down_list()
 # hw/ try on automationpractice.com on Women tab, sort by
 
 # Agenda for 09/20/2020 ****************************
@@ -66,11 +66,13 @@ test_drop_down_list()
 test_alerts()
 
 # hover over element
-test_mouse_hovering()
-close_browser()
+# test_mouse_hovering()
+# close_browser()
 
 
 # Agenda: next class
-#  explicit waits , and difference between implicit_wait()
 # take a screenshot with selenium
+# included in test_alerts()
 
+#  explicit waits , and difference between implicit_wait()
+# used in enter_text_by_xpath

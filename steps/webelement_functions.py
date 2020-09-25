@@ -2,8 +2,11 @@ import yaml
 from os.path import dirname, abspath
 
 from selenium.webdriver import ActionChains
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.wait import WebDriverWait
 
 from steps.webdriver_functions import *
 
@@ -15,6 +18,45 @@ def load_yaml(filepath):
     with open(filepath, 'r') as data:
         document = yaml.safe_load(data)
     return document
+
+
+def enter_text_by_xpath(xpath, some_text):
+    """
+    this method finds the element by xpath and enters text in it
+    :param xpath: correct unique xpath of single INPUT element
+    :param some_text: text to be entered in the element
+    """
+    try:
+        print(f"xpath provided: {xpath}")
+        # element = driver.find_element_by_xpath(xpath)
+        wwait = WebDriverWait(driver, 10)
+        # element = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.XPATH, xpath)))
+        element = wwait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+
+        print(f"entering the following text :{some_text}")
+        element.send_keys(some_text)
+    except WebDriverException as err:
+        print(f"Entering Text failed by following xpath: {xpath}")
+        print(err)
+        take_screenshot('ErrorEnterText_')
+
+def click_element_by_xpath(xpath):
+    """
+    this method finds the element by xpath and clicks it
+    :param xpath: correct unique xpath of single element
+    """
+    try:
+        print(f"xpath provided: {xpath}")
+        # element = driver.find_element_by_xpath(xpath)
+        wwait = WebDriverWait(driver, 10)
+        element = wwait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
+
+        print("clicking the element")
+        element.click()
+    except NoSuchElementException as err:
+        print(f"Check element by following xpath: {xpath}")
+        print(err)
+        take_screenshot('ErrorClickElement_')
 
 
 def login_to_automation_practice(url, email, password):
@@ -148,7 +190,9 @@ def test_alerts():
     confirm_button = "//input[@id='confirmbtn']"
 
     launch_website("https://letskodeit.teachable.com/p/practice")
-    driver.find_element_by_xpath(name_input).send_keys('John')
+    # driver.find_element_by_xpath(name_input).send_keys('John')
+    enter_text_by_xpath(name_input, 'John')
+    take_screenshot('enteringName')
     driver.find_element_by_xpath(confirm_button).click()
     print("alert is clicked")
 
@@ -158,6 +202,7 @@ def test_alerts():
     alert_text = alert.text
     print("1. Alert text captured: ", alert_text)
     assert 'John' in alert_text
+    take_screenshot("alertOpened")
     # clicking OK button on alert
     alert.accept()
     print("Alert confirmed!")
@@ -166,6 +211,7 @@ def test_alerts():
     driver.find_element_by_xpath(name_input).send_keys('Jane')
     driver.find_element_by_xpath(confirm_button).click()
     print("alert is clicked to cancel")
+    take_screenshot("alertJane")
 
     alert = driver.switch_to.alert
     time.sleep(5)
@@ -175,6 +221,7 @@ def test_alerts():
     # clicking cancel on alert
     alert.dismiss()
     print("Alert Canceled!")
+    take_screenshot('AllDone')
 
 
 def test_mouse_hovering():
@@ -191,9 +238,17 @@ def test_mouse_hovering():
 
     # mouse hovering before clicking the top option
     mouse_hover_button = driver.find_element_by_xpath(mouse_hover_xpath)
+    mouse_hover_button.click()
+    driver.execute_script("arguments[0].submit();", mouse_hover_button)
 
     actions = ActionChains(driver)
     actions.move_to_element(mouse_hover_button).perform()
+
+    # actions.move_to_element(driver.find_element_by_xpath(mouse_hover_xpath)).perform()
+
+    # actions.drag_and_drop_by_offset(element, 100, 0)
+    # actions.drag_and_drop_by_offset(element, -100, 0)
+
     print("Mouse hovering is performed.")
 
     driver.find_element_by_xpath(top_option).click()
@@ -202,3 +257,21 @@ def test_mouse_hovering():
     expected_url = "https://letskodeit.teachable.com/p/practice#top"
     assert expected_url == driver.current_url
     print("Url contains #top. Test Passed.")
+
+
+def highlight_element(self, element):
+    driver.execute_script("arguments[0].setAttribute('style', arguments[1]);", element,
+                          "color: green; border: 2px solid green;")
+    self.driver.execute_script("arguments[0].setAttribute('style',   arguments[1]);", element, "")
+
+
+def take_screenshot(message=""):
+    timestmp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y%m%d_%H%M%S')
+    # ROOT_DIR is "C:/deb/week7"
+    file_location = f"{ROOT_DIR}/screenshots/"
+    # file_location = f"C:/deb/week7/screenshots/"
+    file_name = message + timestmp + ".png"
+    full_file_path = file_location + file_name
+
+    driver.save_screenshot(full_file_path)
+    # driver.get_screenshot_as_png(message + timestmp)
