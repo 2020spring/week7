@@ -1,7 +1,6 @@
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 import yaml
-from steps.webdriver_functions import *
 from steps.webelement_functions import *
 
 data = load_yaml(f"{ROOT_DIR}/data/config.yml")
@@ -63,7 +62,7 @@ pswd = data['scenario1']['password']
 # Agenda for 09/20/2020 ****************************
 # yaml file and information hiding using data files
 # alert (confirm, cancel) - java script
-test_alerts()
+# test_alerts()
 
 # hover over element
 # test_mouse_hovering()
@@ -76,3 +75,16 @@ test_alerts()
 
 #  explicit waits , and difference between implicit_wait()
 # used in enter_text_by_xpath
+
+# print(get_str_day())
+# print(get_str_seconds())
+# logger = create_logger()
+# logger.info("This is the info message")
+# logger.debug("Debug message....")
+# logger.error("I am an exceptional case.")
+# logger.warning("something does not seem to be right, but not an error.")
+# logger.critical("WOUUW WOOUW STOP NOW, CAN NOT RUN ANYTHING AT THIS POINT!!!!")
+#
+
+
+

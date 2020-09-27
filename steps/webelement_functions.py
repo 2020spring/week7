@@ -1,3 +1,5 @@
+import logging
+
 import yaml
 from os.path import dirname, abspath
 
@@ -39,6 +41,7 @@ def enter_text_by_xpath(xpath, some_text):
         print(f"Entering Text failed by following xpath: {xpath}")
         print(err)
         take_screenshot('ErrorEnterText_')
+
 
 def click_element_by_xpath(xpath):
     """
@@ -259,10 +262,13 @@ def test_mouse_hovering():
     print("Url contains #top. Test Passed.")
 
 
-def highlight_element(self, element):
-    driver.execute_script("arguments[0].setAttribute('style', arguments[1]);", element,
-                          "color: green; border: 2px solid green;")
-    self.driver.execute_script("arguments[0].setAttribute('style',   arguments[1]);", element, "")
+def highlight_element(element):
+    js_script = "arguments[0].setAttribute('style', arguments[1]);"
+    original_style = element.get_attrivute('style')
+    new_style = "color: green; border: 2px solid green;"
+    # new_style = "background: yellow; color: green; border: 2px solid green;"
+    driver.execute_script(js_script, element, new_style)
+    driver.execute_script(js_script, element, original_style)
 
 
 def take_screenshot(message=""):
@@ -275,3 +281,19 @@ def take_screenshot(message=""):
 
     driver.save_screenshot(full_file_path)
     # driver.get_screenshot_as_png(message + timestmp)
+
+
+def get_str_day():
+    return time.strftime("%Y%m%d")  # 20200927
+
+
+def get_str_seconds():
+    return time.strftime("%Y%m%d_%H%M%S", time.localtime())
+
+
+def create_logger(filename=""):
+    logging.basicConfig(filename=f"{ROOT_DIR}/logs/{filename}{get_str_day()}.log",
+                        level=logging.INFO,
+                        format="%(asctime)-15s [%(levelname)s] %(funcName)s: %(message)s",
+                        filemode='a')  # 'w' - to overwrite in each run, 'a' - append
+    return logging.getLogger()

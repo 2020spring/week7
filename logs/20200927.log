@@ -1,0 +1,8 @@
+2020-09-27 11:38:02,833 [INFO] <module>: This is the info message
+2020-09-27 11:38:02,834 [ERROR] <module>: I am an exceptional case.
+2020-09-27 11:38:02,834 [WARNING] <module>: something does not seem to be right, but not an error.
+2020-09-27 11:38:02,834 [CRITICAL] <module>: WOUUW WOOUW STOP NOW, CAN NOT RUN ANYTHING AT THIS POINT!!!!
+2020-09-27 11:45:22,685 [INFO] <module>: This is the info message
+2020-09-27 11:45:22,685 [ERROR] <module>: I am an exceptional case.
+2020-09-27 11:45:22,685 [WARNING] <module>: something does not seem to be right, but not an error.
+2020-09-27 11:45:22,685 [CRITICAL] <module>: WOUUW WOOUW STOP NOW, CAN NOT RUN ANYTHING AT THIS POINT!!!!
